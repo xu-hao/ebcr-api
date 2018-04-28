@@ -1,11 +1,11 @@
-{-# LANGUAGE DataKinds, TypeOperators, DuplicateRecordFields, DeriveGeneric, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE DataKinds, TypeOperators, DuplicateRecordFields, DeriveGeneric, GeneralizedNewtypeDeriving, OverloadedStrings #-}
 module ECBR where
 
 import Servant.API
 import Data.Map
 import Data.Proxy
 import GHC.Generics
-import Data.Aeson (FromJSON, ToJSON, FromJSONKey, ToJSONKey)
+import Data.Aeson (FromJSON(..), ToJSON(..), FromJSONKey, ToJSONKey, (.=), object)
 import Web.HttpApiData
 
 newtype Feature = Feature String deriving (Generic, Show, Ord, Eq, FromJSONKey, ToJSONKey)
@@ -26,6 +26,8 @@ data Bounds = Bounds {
 data Cohort = Cohort {
     cohort_id :: CurieIdentifier,
     cohort_size :: Bounds
+} | Error {
+    error_message :: String
 } deriving (Generic, Show)
 
 data Features2 = Features2 {
@@ -64,8 +66,11 @@ instance ToJSON FeatureInequality
 instance FromJSON FeatureInequality
 instance ToJSON Bounds
 instance FromJSON Bounds
-instance ToJSON Cohort
-instance FromJSON Cohort
+instance ToJSON Cohort where
+    toJSON (Cohort id size) = object ["cohort_id" .= id, "cohort_size" .= size]
+    toJSON (Error message) = toJSON message
+-- instance FromJSON Cohort where
+
 instance ToJSON Features2
 instance FromJSON Features2
 instance ToJSON Feature1

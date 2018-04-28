@@ -13,7 +13,9 @@ instance Arbitrary Op where
     arbitrary = genericArbitraryU
 
 instance Arbitrary Cohort where
-    arbitrary = genericArbitraryU
+    arbitrary = oneof [
+        pure (Error "Input features invalid. Please try again."),
+        Cohort <$> arbitrary <*> arbitrary]
 
 instance Arbitrary Bounds where
     arbitrary = do
