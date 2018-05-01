@@ -7,7 +7,7 @@ import Data.Proxy
 import Generic.Random
 import Test.QuickCheck
 import Test.QuickCheck.Gen
-import ECBR
+import EBCR
 
 instance Arbitrary Op where
     arbitrary = genericArbitraryU
@@ -55,4 +55,4 @@ instance Arbitrary CurieIdentifier where
 
 main :: IO ()
 main = run 8080 $
-    serve proxyECBRAPI (mock proxyECBRAPI Proxy)
+    serve proxyEBCRAPI (mock proxyEBCRAPI Proxy)

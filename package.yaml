@@ -26,10 +26,7 @@ dependencies:
 - servant-server
 - warp
 - aeson
-- servant-mock
 - http-api-data
-- generic-random
-- QuickCheck
 
 library:
   source-dirs: src
@@ -44,6 +41,9 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - ebcr-api
+    - servant-mock
+    - generic-random
+    - QuickCheck
 
 tests:
   ebcr-api-test:
